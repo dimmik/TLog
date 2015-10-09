@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TLog", "TLog\TLog.csproj", "{C6C94520-EB37-4FA6-A9AC-AEE450360C31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TLogConsoleTest", "TLogConsoleTest\TLogConsoleTest.csproj", "{C5B53272-C988-4AE7-8611-83A5FAC8C7D9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C6C94520-EB37-4FA6-A9AC-AEE450360C31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6C94520-EB37-4FA6-A9AC-AEE450360C31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6C94520-EB37-4FA6-A9AC-AEE450360C31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6C94520-EB37-4FA6-A9AC-AEE450360C31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5B53272-C988-4AE7-8611-83A5FAC8C7D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5B53272-C988-4AE7-8611-83A5FAC8C7D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5B53272-C988-4AE7-8611-83A5FAC8C7D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5B53272-C988-4AE7-8611-83A5FAC8C7D9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
