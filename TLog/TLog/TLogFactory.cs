@@ -52,7 +52,14 @@ namespace TLog
             if (_minLevel < level) return;
             if (LogActions.ContainsKey(level)) // if not - just do nothing
             {
-                LogActions[level](msg, e);
+                try
+                {
+                    LogActions[level](msg, e);
+                }
+                catch (Exception)
+                {
+                    // intentionally nothing - log should not throw
+                }
             }
         }
 
@@ -87,8 +94,7 @@ namespace TLog
             };
         }
     }
-
-    class TransactionalLog : ITlog
+    internal class TransactionalLog : ITlog
     {
 
 
@@ -125,17 +131,24 @@ namespace TLog
         public void Flush()
         {
             var now = DateTimeOffset.Now;
-            _factory.Flush(_factory.FormatFlushBegin(_identifier, now), null);
-            lock (_messageLock)
+            try
             {
-                foreach (var lm in _messages)
+                _factory.Flush(_factory.FormatFlushBegin(_identifier, now), null);
+                lock (_messageLock)
                 {
-                    _factory.Flush(_factory.FormatFlush(lm.Level, lm.Time, lm.Message, lm.Exception), lm.Exception);
+                    foreach (var lm in _messages)
+                    {
+                        _factory.Flush(_factory.FormatFlush(lm.Level, lm.Time, lm.Message, lm.Exception), lm.Exception);
+                    }
+                    if (EmptyMessagesOnFlush)
+                        _messages.Clear();
                 }
-                if (EmptyMessagesOnFlush) 
-                    _messages.Clear();
+                _factory.Flush(_factory.FormatFlushEnd(_identifier, now), null);
             }
-            _factory.Flush(_factory.FormatFlushEnd(_identifier, now), null);
+            catch (Exception)
+            {
+                // intentionally nothing - log should not throw
+            }
         }
 
         public void Log(LogLevel level, string msg, Exception e)
