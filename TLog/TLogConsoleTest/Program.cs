@@ -27,7 +27,7 @@ namespace TLogConsoleTest
                 Info = m =>
                 {
                     log.Info(m);
-                    Thread.Sleep(1000);
+                    //Thread.Sleep(1000); // for async test
                 },
                 Error = (msg, e) => log.Error(e, msg),
                 Flush = (msg, e) => LogManager.GetLogger("file").Error(e, msg),
