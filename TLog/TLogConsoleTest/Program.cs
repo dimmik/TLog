@@ -26,6 +26,7 @@ namespace TLogConsoleTest
                 Debug = log.Debug,
                 Info = m =>
                 {
+                    Thread.Sleep(new Random().Next(1000));
                     log.Info(m);
                     //Thread.Sleep(1000); // for async test
                 },
