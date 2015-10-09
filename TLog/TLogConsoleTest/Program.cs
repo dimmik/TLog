@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Configuration;
-using System.Text;
-using System.Threading.Tasks;
+using NLog;
 using TLog;
+using LogFactory = TLog.LogFactory;
+using LogLevel = TLog.LogLevel;
+using System.Threading;
 
 namespace TLogConsoleTest
 {
@@ -12,7 +12,7 @@ namespace TLogConsoleTest
     {
         static void Main(string[] args)
         {
-            var log = NLog.LogManager.GetLogger("console");
+            var log = LogManager.GetLogger("console");
             log.Trace("trace");
             log.Debug("debug");
             log.Info("info");
@@ -20,43 +20,43 @@ namespace TLogConsoleTest
             log.Error("error");
             Console.WriteLine("press any key");
             Console.ReadKey();
-            var tlogFactory = new TLog.LogFactory(minLevel: LogLevel.Info)
+            var tlogFactory = new LogFactory(minLevel: LogLevel.Info)
             {
                 Trace = log.Trace,
                 Debug = log.Debug,
-                Info = log.Info,
+                Info = m =>
+                {
+                    log.Info(m);
+                    Thread.Sleep(1000);
+                },
                 Error = (msg, e) => log.Error(e, msg),
-                Flush = (msg, e) => NLog.LogManager.GetLogger("file").Error(e, msg),
+                Flush = (msg, e) => LogManager.GetLogger("file").Error(e, msg),
 
                 //FlushLevel = LogLevel.Debug
             };
             //tlogFactory.Trace = null;
-            var tlog = tlogFactory.GetLogger("test logger");
-            tlog.Trace("trace");
-            tlog.Debug("debug");
-            tlog.Info("info");
-            try
-            {
-                MethodWitnIntentionalNullpointer();
-            }
-            catch (Exception e)
-            {
-                tlog.Log(LogLevel.FatalError, "fatal error", e);
-            }
-
-            tlog.Trace("2 - trace");
-            tlog.Debug("2 - debug");
-            tlog.Info("2 - info");
-            try
-            {
-                MethodWitnIntentionalNullpointer();
-            }
-            catch (Exception e)
-            {
-                tlog.Log(LogLevel.FatalError, "2 - fatal error", e);
-            }
+            TestLog(tlogFactory.GetLogger("test logger"));
+            TestLog(tlogFactory.GetAsyncLogger("test async logger"));
             Console.WriteLine("press any key");
             Console.ReadKey();
+        }
+
+        private static void TestLog(ITlog tlog)
+        {
+            tlog.Trace("trace");
+            tlog.Debug("debug");
+            for (var i = 0; i < 20; i++)
+            {
+                tlog.Info("info: " + i);
+            }
+            try
+            {
+                MethodWitnIntentionalNullpointer();
+            }
+            catch (Exception e)
+            {
+                tlog.Error("error", e);
+            }
         }
 
         private static void MethodWitnIntentionalNullpointer()

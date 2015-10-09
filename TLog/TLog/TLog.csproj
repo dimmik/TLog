@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncTLog.cs" />
     <Compile Include="ITlog.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="TLogFactory.cs" />

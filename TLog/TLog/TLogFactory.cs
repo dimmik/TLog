@@ -93,7 +93,13 @@ namespace TLog
                 EmptyMessagesOnFlush = emptyOnFlush
             };
         }
+
+        public ITlog GetAsyncLogger(string identifier, bool emptyOnFlush = true)
+        {
+            return new AsyncTLog(GetLogger(identifier, emptyOnFlush));
+        }
     }
+
     internal class TransactionalLog : ITlog
     {
 
